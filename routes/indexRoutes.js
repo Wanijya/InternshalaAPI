@@ -11,6 +11,8 @@ const {
   studentresetpassword,
   studentupdate,
   studentavatar,
+  applyinternship,
+  applyjob,
 } = require("../controllers/indexController");
 const { isAuthenticated } = require("../middlewares/auth");
 
@@ -36,12 +38,24 @@ router.post("/student/send-mail", studentsendmail);
 router.get("/student/forget-link/:id", studentforgetlink);
 
 // POST /student/reset-password/:studentid
-router.post("/student/reset-password/:id", isAuthenticated, studentresetpassword);
+router.post(
+  "/student/reset-password/:id",
+  isAuthenticated,
+  studentresetpassword
+);
 
 // POST /student/update/:studentid
 router.post("/student/update/:id", isAuthenticated, studentupdate);
 
 // POST /student/avatar/:studentid
 router.post("/student/avatar/:id", isAuthenticated, studentavatar);
+
+//------------------ apply internship ----------------
+// POST /student/apply/internship/:internshipid
+router.post("/student/apply/internship/:internshipid", isAuthenticated, applyinternship);
+
+//------------------apply job----------------
+// POST /student/apply/job/:jobid
+router.post("/student/apply/job/:jobid", isAuthenticated, applyjob);
 
 module.exports = router;
