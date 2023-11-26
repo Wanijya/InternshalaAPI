@@ -2,6 +2,10 @@ require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const app = express();
 
+// cors
+const cors = require("cors");
+app.use(cors({ credentials: true, origin: true }));
+
 //db connection
 require("./models/database").connectDatabase();
 
