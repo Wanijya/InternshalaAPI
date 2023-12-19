@@ -58,15 +58,16 @@ exports.studentsendmail = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.studentforgetlink = catchAsyncErrors(async (req, res, next) => {
-  const student = await Student.findById(req.params.id).exec();
+  const student = await Student.findOne({ email: req.body.email }).exec();
   if (!student)
     return next(
       new ErrorHandler("User not found with this Email address", 404)
     );
-  if (student.resetPasswordToken == "1") {
-    student.resetPasswordToken = "0";
+  if (student.resetPasswordToken == req.body.otp) {
+    student.resetPasswordToken = "0000";
     student.password = req.body.password;
     await student.save();
+    res.status(200).json({ msg: "Password Change Sucessully" });
   } else {
     return next(new ErrorHandler("Invalid Reset Password Link!", 500));
   }
@@ -140,4 +141,18 @@ exports.applyjob = catchAsyncErrors(async (req, res, next) => {
   res.json({ student, job });
 
   res.json({ student });
+});
+
+// -----------------read all jobs----------------
+exports.readalljobs = catchAsyncErrors(async (req, res, next) => {
+  const jobs = await Job.find().exec();
+
+  res.status(200).json({ jobs });
+});
+
+//------------------read all internships----------------
+exports.readallinternships = catchAsyncErrors(async (req, res, next) => {
+  const internships = await Internship.find().exec();
+
+  res.status(200).json({ internships });
 });
